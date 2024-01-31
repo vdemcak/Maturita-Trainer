@@ -24,7 +24,30 @@
 
     @vite('resources/css/main.css')
 </head>
-<body class="flex h-screen w-screen items-center justify-center">
+<body class="flex flex-col h-screen w-screen items-center py-12 gap-y-8">
+
+{{-- Question Navigator --}}
+<div class="inline-flex rounded-md shadow-sm" role="group">
+    @foreach($files as $file)
+
+        @if($loop->first)
+            <a href="/otazky/2023-{{ explode('.', explode('/', $file)[1])[0] }}"
+               class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-300 rounded-s-lg hover:bg-gray-900 hover:text-white">
+                {{ explode('.', explode('/', $file)[1])[0] }}
+            </a>
+        @elseif ($loop->last)
+            <a href="/otazky/2023-{{ explode('.', explode('/', $file)[1])[0] }}"
+               class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-l-0 border-gray-300 rounded-e-lg hover:bg-gray-900 hover:text-white">
+                {{ explode('.', explode('/', $file)[1])[0] }}
+            </a>
+        @else
+            <a href="/otazky/2023-{{ explode('.', explode('/', $file)[1])[0] }}"
+               class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-t border-r border-b border-gray-300 hover:bg-gray-900 hover:text-white">
+                {{ explode('.', explode('/', $file)[1])[0] }}
+            </a>
+        @endif
+    @endforeach
+</div>
 
 <div class="w-full max-w-2xl mx-auto p-4 md:p-8 flex flex-col gap-4">
     <div class="w-full flex justify-between items-center">
@@ -36,7 +59,7 @@
         <img
             src="/storage/{{$attachment}}"
             alt="Quiz Image"
-            class="w-full object-cover rounded-lg"
+            class="object-contain rounded-lg h-96"
         />
     @endif
 
@@ -68,10 +91,10 @@
             @endforeach
         @endif
 
-        <button
-            class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5">
-            Preskočiť
-        </button>
+        {{--        <button--}}
+        {{--            class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5">--}}
+        {{--            Preskočiť--}}
+        {{--        </button>--}}
     </div>
 </div>
 

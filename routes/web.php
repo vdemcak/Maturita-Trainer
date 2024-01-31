@@ -41,6 +41,7 @@ Route::get('otazky/{question}', function ($question) {
         'answer_type' => $result->getFrontMatter()['answer_type'],
         'choices' => $result->getFrontMatter()['choices'] ?? null,
         'attachment' => $result->getFrontMatter()['attachment'] ?? null,
+        'files' => Storage::disk('questions')->allFiles('2023/')
     ]);
 });
 
