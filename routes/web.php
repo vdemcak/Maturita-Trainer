@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
+use League\CommonMark\MarkdownConverter;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +19,33 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('question');
+});
+
+Route::get('otazky/{question}', function ($question) {
+    $location = explode('-', $question);
+
+    $file = Storage::disk('questions')->get($location[0] . '/' . $location[1] . '.md');
+
+    $config = [];
+    $environment = new Environment($config);
+    $environment->addExtension(new CommonMarkCoreExtension());
+    $environment->addExtension(new FrontMatterExtension());
+    $converter = new MarkdownConverter($environment);
+
+    $result = $converter->convert($file);
+
+    return view('question', [
+        'id' => $result->getFrontMatter()['id'],
+        'question' => $result->getContent(),
+        'answer_type' => $result->getFrontMatter()['answer_type'],
+        'choices' => $result->getFrontMatter()['choices'] ?? null,
+        'attachment' => $result->getFrontMatter()['attachment'] ?? null,
+    ]);
+});
+
+
+Route::get('create', function () {
+    // Create a new markdown file using the storage driver
+    Storage::disk('questions')->put('file.md', '# Hello World');
 });
