@@ -16,7 +16,7 @@ class Quiz extends Component
     // The current question - synced with the URL
     #[Url(keep: true)]
     public string $q = '01';
-    
+
     public array $questions;
 
     // The year and subject of the current quiz
@@ -51,6 +51,11 @@ class Quiz extends Component
         $correct_answer = $question_markdown->getFrontMatter()['answer'];
 
         $this->questions[$this->q]['is_correct'] = $user_answer == $correct_answer;
+
+        // If the answer type is multiple_choice, we need to convert the correct answer from an index to the actual answer
+        if ($question_markdown->getFrontMatter()['answer_type'] === 'multiple_choice') {
+            $correct_answer = $question_markdown->getFrontMatter()['choices'][$correct_answer];
+        }
 
         if ($this->questions[$this->q]['is_correct']) {
             $this->dispatch('answer-correct');
