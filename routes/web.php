@@ -2,10 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
-use League\CommonMark\Environment\Environment;
-use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
-use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
-use League\CommonMark\MarkdownConverter;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,34 +15,16 @@ use League\CommonMark\MarkdownConverter;
 */
 
 Route::get('/', function () {
-    return view('question');
+    return view('pages.home');
 });
 
-Route::get('otazky/{question}', function ($question) {
-    $location = explode('-', $question);
+Route::get('testy/{year}/{subject}', function ($year, $subject) {
+    if (!Storage::disk('questions')->exists($year . '/' . $subject)) {
+        abort(404, 'No questions found for test ' . $year . '/' . $subject);
+    }
 
-    $file = Storage::disk('questions')->get($location[0] . '/' . $location[1] . '.md');
-
-    $config = [];
-    $environment = new Environment($config);
-    $environment->addExtension(new CommonMarkCoreExtension());
-    $environment->addExtension(new FrontMatterExtension());
-    $converter = new MarkdownConverter($environment);
-
-    $result = $converter->convert($file);
-
-    return view('question', [
-        'id' => $result->getFrontMatter()['id'],
-        'question' => $result->getContent(),
-        'answer_type' => $result->getFrontMatter()['answer_type'],
-        'choices' => $result->getFrontMatter()['choices'] ?? null,
-        'attachment' => $result->getFrontMatter()['attachment'] ?? null,
-        'files' => Storage::disk('questions')->allFiles('2023/')
+    return view('pages.test', [
+        'year' => $year,
+        'subject' => $subject,
     ]);
-});
-
-
-Route::get('create', function () {
-    // Create a new markdown file using the storage driver
-    Storage::disk('questions')->put('file.md', '# Hello World');
 });
