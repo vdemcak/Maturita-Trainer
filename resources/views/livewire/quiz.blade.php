@@ -1,15 +1,15 @@
 <div class="grid h-full w-full justify-center gap-y-8 py-12 grid-rows-[min-content_auto]">
 
     {{-- Question Navigator --}}
-    <div class="inline-flex w-full overflow-x-scroll rounded-md shadow-sm" role="group">
+    <div class="inline-flex w-full overflow-x-auto rounded-md shadow-sm" role="group">
         @foreach($questions as $question => $state)
             <span
                 wire:click="changeQuestion('{{ $question }}')"
                 class="navigator-btn border
                    @if($loop->first) rounded-s-lg @elseif($loop->last) border-l-0 rounded-e-lg @else border-t border-r border-b @endif
                    @if($q == $question) navigator-btn-active @else
-                       @if($state === false) navigator-btn-incorrect @endif
-                       @if($state === true) navigator-btn-correct @endif
+                       @if($state['is_correct'] === false) navigator-btn-incorrect @endif
+                       @if($state['is_correct'] === true) navigator-btn-correct @endif
                    @endif">
             {{ $question }}
         </span>
