@@ -19,7 +19,8 @@
     {{-- Question Section --}}
     <div class="mx-auto flex w-full max-w-2xl flex-col gap-4">
         <div class="flex items-center justify-between">
-            <span class="rounded-full bg-blue-500 px-3 py-1 text-sm text-white">{{ ucfirst($subject) }}</span>
+            <span
+                class="rounded-full bg-blue-500 px-3 py-1 text-sm text-white">{{ ucfirst($subject) }} {{ $year }}</span>
             <p class="text-sm text-gray-400">{{$id}}</p>
         </div>
 

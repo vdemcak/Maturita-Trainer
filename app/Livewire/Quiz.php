@@ -57,10 +57,12 @@ class Quiz extends Component
             $correct_answer = $question_markdown->getFrontMatter()['choices'][$correct_answer];
         }
 
+        $this->questions[$this->q]['answer'] = $correct_answer;
+
         if ($this->questions[$this->q]['is_correct']) {
             $this->dispatch('answer-correct');
         } else {
-            $this->questions[$this->q]['answer'] = $correct_answer;
+            $this->questions[$this->q]['explanation'] = $question_markdown->getFrontMatter()['explanation'] ?? null;
         }
     }
 
