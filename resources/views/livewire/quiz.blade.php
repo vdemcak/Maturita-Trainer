@@ -36,7 +36,7 @@
         </article>
 
         {{-- Answer Section--}}
-        <div class="flex flex-col gap-y-4">
+        <div class="flex flex-col gap-y-4" x-data="{ answers: {} }">
             {{-- Numeric--}}
             @if($answer_type == 'numeric')
                 @include('components.answer-numeric')

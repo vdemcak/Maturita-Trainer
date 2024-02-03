@@ -1,4 +1,4 @@
-<div x-data="{ answers: {} }" class="flex flex-col gap-y-4">
+<div class="flex flex-col gap-y-4">
     <input
         type="string"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5"
